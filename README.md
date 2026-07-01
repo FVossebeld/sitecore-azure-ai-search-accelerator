@@ -35,19 +35,12 @@ bigger.
 
 ## Architecture
 
-```
-   Content export (any CMS)              You run: azd up
-   *.json  ->  preprocess  ->  push ->  [ Azure AI Search ]
-                                           |  kb-baseline  (naive keyword index)
-                                           |  kb-tuned     (analyzer + synonyms +
-                                           |                scoring + semantic ranker
-                                           |                + optional vectors)
-   Test set (query -> intended_id)  ->  evaluate  ->  reports/relevance-report.md
-```
+![Architecture: azd provisions Azure AI Search, storage and optional Azure OpenAI. A Python pipeline preprocesses exported content, builds a naive baseline index and a tuned index, then evaluates both against a test set and writes a relevance report.](docs/images/architecture.svg)
 
 Two indexes are built from the same documents so the comparison is fair. The
 baseline represents a typical out-of-the-box setup. The tuned index carries the
-relevance configuration. The evaluation runs both and reports the delta.
+relevance configuration. The evaluation runs both and reports the delta. The
+optional vector layer (Azure OpenAI embeddings) is off by default.
 
 ## What gets deployed
 

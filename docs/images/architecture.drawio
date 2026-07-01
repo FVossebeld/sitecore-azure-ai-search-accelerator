@@ -1,0 +1,89 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="arch" name="Architecture">
+    <mxGraphModel dx="1200" dy="700" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1180" pageHeight="640" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="t1" value="Azure AI Search Relevance Accelerator" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1B1B1B;fontFamily=Helvetica" vertex="1" parent="1">
+          <mxGeometry x="40" y="18" width="1080" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="t2" value="Provision, ingest, configure and measure the relevance lift: a naive baseline vs a tuned index, scored on a fixed test set." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=13;fontColor=#5f6b7a;fontFamily=Helvetica" vertex="1" parent="1">
+          <mxGeometry x="40" y="54" width="1080" height="22" as="geometry" />
+        </mxCell>
+
+        <mxCell id="z1" value="azd up  ·  provisions Azure infra" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#0078D4;strokeColor=#005A9E;fontColor=#FFFFFF;fontStyle=1;fontFamily=Helvetica;shadow=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="92" width="250" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="in1" value="&lt;b&gt;Content export&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#7a5c00;font-size:11px&quot;&gt;any CMS → .json&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4CE;strokeColor=#D9B300;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="40" y="160" width="180" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="in2" value="&lt;b&gt;Test set&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#7a5c00;font-size:11px&quot;&gt;.csv · query → intended_id&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4CE;strokeColor=#D9B300;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="40" y="392" width="180" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pbox" value="Ingest &amp; evaluate  ·  Python" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F6FB;strokeColor=#5B7FB5;dashed=1;verticalAlign=top;align=left;spacingLeft=12;spacingTop=8;fontStyle=1;fontColor=#2E4C7E;fontSize=13;fontFamily=Helvetica" vertex="1" parent="1">
+          <mxGeometry x="270" y="135" width="300" height="378" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" value="&lt;b&gt;preprocess&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#5f6b7a;font-size:11px&quot;&gt;strip HTML · map to schema&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#5B7FB5;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="295" y="182" width="250" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" value="&lt;b&gt;push_to_index&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#5f6b7a;font-size:11px&quot;&gt;build indexes · upload docs&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#5B7FB5;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="295" y="276" width="250" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" value="&lt;b&gt;evaluate&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#5f6b7a;font-size:11px&quot;&gt;Success@1 · MRR@10 · 0-result&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#5B7FB5;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="295" y="414" width="250" height="66" as="geometry" />
+        </mxCell>
+
+        <mxCell id="azbox" value="Microsoft Azure" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF3FB;strokeColor=#0078D4;verticalAlign=top;align=left;spacingLeft=12;spacingTop=8;fontStyle=1;fontColor=#0078D4;fontSize=14;fontFamily=Helvetica" vertex="1" parent="1">
+          <mxGeometry x="620" y="115" width="520" height="398" as="geometry" />
+        </mxCell>
+        <mxCell id="search" value="&lt;b&gt;Azure AI Search&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#5f6b7a;font-size:11px&quot;&gt;Basic tier · Semantic ranker&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0078D4;verticalAlign=top;align=left;spacingLeft=10;spacingTop=6;fontColor=#0078D4;fontFamily=Helvetica;shadow=1" vertex="1" parent="1">
+          <mxGeometry x="648" y="168" width="300" height="176" as="geometry" />
+        </mxCell>
+        <mxCell id="chipbase" value="&lt;b&gt;kb-baseline&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#5f6b7a;font-size:10px&quot;&gt;naive keyword&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#A6A6A6;fontFamily=Helvetica;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="666" y="236" width="128" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="chiptuned" value="&lt;b&gt;kb-tuned&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#0b6a0b;font-size:10px&quot;&gt;nl analyzer · synonyms&lt;br&gt;scoring · semantic&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DFF6DD;strokeColor=#107C10;fontFamily=Helvetica;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="806" y="236" width="128" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="storage" value="&lt;b&gt;Azure Storage&lt;/b&gt;  ·  Blob&lt;br&gt;&lt;span style=&quot;color:#5f6b7a;font-size:11px&quot;&gt;content export staging&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0078D4;fontColor=#0078D4;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="648" y="364" width="300" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="openai" value="&lt;b&gt;Azure OpenAI&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#5b3d8c;font-size:11px&quot;&gt;embeddings&lt;br&gt;optional · ENABLE_VECTOR&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3EEFA;strokeColor=#8661C5;dashed=1;fontColor=#5b3d8c;fontFamily=Helvetica;fontSize=13" vertex="1" parent="1"><mxGeometry x="975" y="372" width="150" height="96" as="geometry" /></mxCell>
+
+        <mxCell id="rep" value="&lt;b&gt;relevance-report.md&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#0b6a0b;font-size:11px&quot;&gt;baseline vs tuned lift&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DFF6DD;strokeColor=#107C10;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="295" y="536" width="250" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;Solid = core flow (keyword + semantic, no Azure OpenAI needed)&lt;br&gt;Dashed purple = optional vector / hybrid layer&lt;br&gt;Dashed blue = azd provisioning" style="text;html=1;fillColor=#FFFFFF;strokeColor=#D0D7E2;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=11;fontColor=#5f6b7a;fontFamily=Helvetica;rounded=1" vertex="1" parent="1">
+          <mxGeometry x="620" y="536" width="520" height="76" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e8" value="provision" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;dashed=1;strokeColor=#0078D4;fontSize=10;fontColor=#0078D4;fontFamily=Helvetica;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.1;entryDx=0;entryDy=0" edge="1" parent="1" source="z1" target="azbox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#33475b;fontFamily=Helvetica;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0" edge="1" parent="1" source="in1" target="p1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#33475b;fontFamily=Helvetica;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0" edge="1" parent="1" source="p1" target="p2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="upload docs" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#33475b;fontSize=11;fontColor=#33475b;fontFamily=Helvetica;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0" edge="1" parent="1" source="p2" target="search">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#33475b;fontFamily=Helvetica;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0" edge="1" parent="1" source="in2" target="p3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="queries" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#33475b;fontSize=11;fontColor=#33475b;fontFamily=Helvetica;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.85;entryDx=0;entryDy=0" edge="1" parent="1" source="p3" target="search">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="writes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#107C10;fontSize=11;fontColor=#107C10;fontFamily=Helvetica;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0" edge="1" parent="1" source="p3" target="rep">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="vectors (optional)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;dashed=1;strokeColor=#8661C5;fontSize=10;fontColor=#5b3d8c;fontFamily=Helvetica;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0" edge="1" parent="1" source="chiptuned" target="openai"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
