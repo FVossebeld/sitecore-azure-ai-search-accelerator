@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.sample
+
+# azd / Azure
+.azure/
+*.azurewebsites.net
+
+# Output artifacts
+out/
+reports/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

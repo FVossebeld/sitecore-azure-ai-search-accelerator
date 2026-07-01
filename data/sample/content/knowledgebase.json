@@ -1,0 +1,110 @@
+[
+  {
+    "id": "doc-001",
+    "title": "Paspoort aanvragen",
+    "body": "<p>Een <strong>paspoort</strong> is een reisdocument waarmee u naar het buitenland reist. U vraagt uw paspoort persoonlijk aan bij de balie. Neem een goedgekeurde pasfoto en uw huidige reisdocument mee. De aanvraag duurt ongeveer vijf tot tien werkdagen.</p>",
+    "url": "https://voorbeeld.example.org/paspoort-aanvragen",
+    "contentType": "article",
+    "tags": ["paspoort", "reisdocument", "identiteit"],
+    "lastModified": "2026-01-14T00:00:00Z"
+  },
+  {
+    "id": "doc-002",
+    "title": "Verhuizing doorgeven",
+    "body": "<p>Gaat u verhuizen? Geef uw <strong>adreswijziging</strong> op tijd door, uiterlijk vijf dagen na de verhuisdatum. U kunt uw verhuizing online doorgeven met uw inlogmiddel of aan de balie. Een verhuizing binnen dezelfde plaats en een verhuizing naar een andere plaats geeft u op dezelfde manier door.</p>",
+    "url": "https://voorbeeld.example.org/verhuizing-doorgeven",
+    "contentType": "article",
+    "tags": ["verhuizen", "adreswijziging"],
+    "lastModified": "2026-01-20T00:00:00Z"
+  },
+  {
+    "id": "doc-003",
+    "title": "Afval en recycling",
+    "body": "<p>Huishoudelijk <strong>afval</strong> scheidt u in restafval, papier, glas en groente-, fruit- en tuinafval. Grof huisvuil brengt u naar het afvalbrengstation of laat u op afspraak ophalen. Een goede afvalscheiding helpt bij het hergebruik van grondstoffen.</p>",
+    "url": "https://voorbeeld.example.org/afval-en-recycling",
+    "contentType": "article",
+    "tags": ["afval", "recycling", "huisvuil"],
+    "lastModified": "2025-11-30T00:00:00Z"
+  },
+  {
+    "id": "doc-004",
+    "title": "Rijbewijs verlengen",
+    "body": "<p>Uw <strong>rijbewijs</strong> is tien jaar geldig. Verleng het rijbewijs voordat het verloopt. U vraagt de verlenging persoonlijk aan met een recente pasfoto en uw huidige rijbewijs. Voor sommige categorieen is een medische keuring nodig.</p>",
+    "url": "https://voorbeeld.example.org/rijbewijs-verlengen",
+    "contentType": "article",
+    "tags": ["rijbewijs", "verkeer"],
+    "lastModified": "2026-02-02T00:00:00Z"
+  },
+  {
+    "id": "doc-005",
+    "title": "Parkeervergunning aanvragen",
+    "body": "<p>Bewoners van een gebied met betaald parkeren kunnen een <strong>parkeervergunning</strong> aanvragen. Met de parkeervergunning parkeert u uw auto in uw eigen wijk zonder per keer te betalen. U heeft uw kenteken en een bewijs van inschrijving nodig.</p>",
+    "url": "https://voorbeeld.example.org/parkeervergunning-aanvragen",
+    "contentType": "article",
+    "tags": ["parkeervergunning", "parkeren", "auto"],
+    "lastModified": "2026-01-08T00:00:00Z"
+  },
+  {
+    "id": "doc-006",
+    "title": "Gemeentelijke belastingen betalen",
+    "body": "<p>Elk jaar ontvangt u een aanslag voor de gemeentelijke <strong>belastingen</strong>. U kunt de heffing in een keer betalen of in termijnen via automatische incasso. Heeft u een laag inkomen, dan komt u mogelijk in aanmerking voor kwijtschelding.</p>",
+    "url": "https://voorbeeld.example.org/belastingen-betalen",
+    "contentType": "article",
+    "tags": ["belasting", "betalen"],
+    "lastModified": "2026-01-05T00:00:00Z"
+  },
+  {
+    "id": "doc-007",
+    "title": "Aangifte van een gestolen fiets",
+    "body": "<p>Is uw <strong>fiets</strong> gestolen? Doe aangifte van de diefstal. Houd het framenummer en het aankoopbewijs bij de hand. Met een aangifte vergroot u de kans dat uw tweewieler wordt teruggevonden en meldt u de diefstal officieel.</p>",
+    "url": "https://voorbeeld.example.org/aangifte-gestolen-fiets",
+    "contentType": "faq",
+    "tags": ["fiets", "aangifte", "diefstal"],
+    "lastModified": "2025-12-15T00:00:00Z"
+  },
+  {
+    "id": "doc-008",
+    "title": "Identiteitskaart aanvragen",
+    "body": "<p>Een <strong>identiteitskaart</strong> is een identiteitsbewijs waarmee u zich in Nederland en een deel van Europa legitimeert. U vraagt de id-kaart persoonlijk aan met een pasfoto. De identiteitskaart is niet geldig voor alle landen buiten Europa, gebruik daarvoor een paspoort.</p>",
+    "url": "https://voorbeeld.example.org/identiteitskaart-aanvragen",
+    "contentType": "article",
+    "tags": ["identiteitskaart", "identiteit"],
+    "lastModified": "2026-01-16T00:00:00Z"
+  },
+  {
+    "id": "doc-009",
+    "title": "Openingstijden en contact",
+    "body": "<p>U kunt op werkdagen langskomen aan de balie. Voor de meeste producten maakt u vooraf een afspraak. Bekijk hier de <strong>openingstijden</strong> en de manieren om contact op te nemen, per telefoon of via het contactformulier.</p>",
+    "url": "https://voorbeeld.example.org/openingstijden-contact",
+    "contentType": "page",
+    "tags": ["contact", "openingstijden"],
+    "lastModified": "2026-02-10T00:00:00Z"
+  },
+  {
+    "id": "doc-010",
+    "title": "Melding openbare ruimte",
+    "body": "<p>Ziet u een kapotte straatverlichting, zwerfafval of een defecte stoeptegel? Doe een <strong>melding</strong> over de openbare ruimte. Beschrijf de locatie en het probleem zo duidelijk mogelijk. Een melding of klacht over een storing wordt zo snel mogelijk opgepakt.</p>",
+    "url": "https://voorbeeld.example.org/melding-openbare-ruimte",
+    "contentType": "faq",
+    "tags": ["melding", "openbare ruimte"],
+    "lastModified": "2026-01-28T00:00:00Z"
+  },
+  {
+    "id": "doc-011",
+    "title": "Trouwen en partnerschap",
+    "body": "<p>Wilt u <strong>trouwen</strong> of een geregistreerd partnerschap aangaan? Meld uw voorgenomen huwelijk vooraf en kies een datum en locatie. U regelt getuigen en levert de benodigde documenten aan. Een huwelijk en een partnerschap hebben grotendeels dezelfde juridische gevolgen.</p>",
+    "url": "https://voorbeeld.example.org/trouwen-partnerschap",
+    "contentType": "article",
+    "tags": ["trouwen", "huwelijk"],
+    "lastModified": "2025-12-01T00:00:00Z"
+  },
+  {
+    "id": "doc-012",
+    "title": "Kinderopvang en toeslagen",
+    "body": "<p>Werkende ouders kunnen gebruikmaken van <strong>kinderopvang</strong>, zoals een kinderdagverblijf of buitenschoolse opvang. Afhankelijk van uw inkomen heeft u recht op kinderopvangtoeslag. Informeer op tijd naar de voorwaarden en de aanvraag van de toeslag.</p>",
+    "url": "https://voorbeeld.example.org/kinderopvang-toeslagen",
+    "contentType": "article",
+    "tags": ["kinderopvang", "toeslagen"],
+    "lastModified": "2026-01-22T00:00:00Z"
+  }
+]

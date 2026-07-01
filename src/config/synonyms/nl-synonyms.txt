@@ -1,0 +1,24 @@
+# Synonym rules in Apache Solr format (one rule per line).
+# Blank lines and lines starting with '#' are ignored.
+#
+# Equivalency rule (comma separated): all terms are treated as interchangeable.
+#   fiets, rijwiel, tweewieler
+# Explicit mapping (=>): left-hand terms are rewritten to the right-hand term.
+#   euro's, eur => euro
+#
+# These are GENERIC example clusters for a Dutch civic knowledge base.
+# Replace them with clusters that fit your own content and real query logs.
+
+fiets, rijwiel, tweewieler
+auto, wagen, voertuig, motorvoertuig
+paspoort, reisdocument
+identiteitskaart, id-kaart, idkaart, id kaart, identiteitsbewijs
+verhuizen, verhuizing, adreswijziging
+rijbewijs, rijbewijzen
+afval, huisvuil, vuilnis, restafval
+parkeervergunning, parkeerontheffing, parkeerkaart
+belasting, belastingen, gemeentebelasting, heffing
+trouwen, huwelijk, partnerschap
+kinderopvang, kinderdagverblijf, opvang
+melding, klacht, storing
+aanvragen, aanvraag, aanvraagformulier

@@ -1,0 +1,20 @@
+{
+  "profiles": [
+    {
+      "name": "relevance-boost",
+      "description": "Boost matches in the title and tags, and gently favour fresher content.",
+      "text_weights": {
+        "title": 3.0,
+        "tags": 2.0,
+        "body": 1.0
+      },
+      "freshness": {
+        "field": "lastModified",
+        "boost": 2.0,
+        "duration_days": 365,
+        "interpolation": "quadratic"
+      }
+    }
+  ],
+  "default_profile": "relevance-boost"
+}
