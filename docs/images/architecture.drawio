@@ -5,7 +5,7 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <mxCell id="t1" value="Azure AI Search Relevance Accelerator" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1B1B1B;fontFamily=Helvetica" vertex="1" parent="1">
+        <mxCell id="t1" value="Sitecore to Azure AI Search Relevance Accelerator" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1B1B1B;fontFamily=Helvetica" vertex="1" parent="1">
           <mxGeometry x="40" y="18" width="1080" height="34" as="geometry" />
         </mxCell>
         <mxCell id="t2" value="Provision, ingest, configure and measure the relevance lift: a naive baseline vs a tuned index, scored on a fixed test set." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=13;fontColor=#5f6b7a;fontFamily=Helvetica" vertex="1" parent="1">
@@ -16,7 +16,7 @@
           <mxGeometry x="300" y="92" width="250" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="in1" value="&lt;b&gt;Content export&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#7a5c00;font-size:11px&quot;&gt;any CMS → .json&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4CE;strokeColor=#D9B300;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
+        <mxCell id="in1" value="&lt;b&gt;Sitecore export&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#7a5c00;font-size:11px&quot;&gt;Experience Edge → .json&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4CE;strokeColor=#D9B300;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">
           <mxGeometry x="40" y="160" width="180" height="86" as="geometry" />
         </mxCell>
         <mxCell id="in2" value="&lt;b&gt;Test set&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#7a5c00;font-size:11px&quot;&gt;.csv · query → intended_id&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4CE;strokeColor=#D9B300;fontFamily=Helvetica;shadow=1;fontSize=13" vertex="1" parent="1">

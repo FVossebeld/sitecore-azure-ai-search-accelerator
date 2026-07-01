@@ -1,6 +1,6 @@
-"""Turn a raw content export into the canonical schema the index expects.
+"""Turn a raw Sitecore export into the canonical schema the index expects.
 
-Canonical document contract (this is what any CMS export must map to):
+Canonical document contract (this is what a Sitecore item export must map to):
 
     {
       "id":           "unique-stable-id",
@@ -29,15 +29,18 @@ from src.common.settings import SAMPLE_CONTENT_DIR
 
 CANONICAL_FIELDS = ("id", "title", "body", "url", "contentType", "tags", "lastModified")
 
-# Common source field names mapped to the canonical name. Extend for your CMS.
+# Source field names mapped to the canonical name. Canonical names win when both
+# are present. The aliases cover the field names Sitecore items commonly expose
+# (template fields plus standard fields such as __Updated). Extend for your own
+# templates.
 FIELD_ALIASES = {
-    "id": ["id", "itemId", "documentId", "key"],
-    "title": ["title", "name", "heading", "pageTitle"],
-    "body": ["body", "content", "text", "html", "description"],
-    "url": ["url", "link", "permalink", "path"],
-    "contentType": ["contentType", "type", "template", "category"],
-    "tags": ["tags", "keywords", "labels", "topics"],
-    "lastModified": ["lastModified", "updated", "modified", "date", "updatedAt"],
+    "id": ["id", "ItemID", "itemId", "ItemId", "documentId", "_id", "key"],
+    "title": ["title", "Title", "NavigationTitle", "PageTitle", "MetaTitle", "name", "heading", "pageTitle"],
+    "body": ["body", "Content", "Text", "MainText", "content", "text", "html", "Summary", "Abstract", "Introduction", "description"],
+    "url": ["url", "ItemUrl", "Url", "link", "permalink", "path"],
+    "contentType": ["contentType", "TemplateName", "type", "template", "category"],
+    "tags": ["tags", "Tags", "keywords", "Keywords", "Categories", "labels", "topics"],
+    "lastModified": ["lastModified", "__Updated", "Updated", "updated", "modified", "__Created", "date", "updatedAt"],
 }
 
 
@@ -62,7 +65,8 @@ def _normalize_tags(value: Any) -> list[str]:
     if value is None:
         return []
     if isinstance(value, str):
-        parts = [p.strip() for p in value.replace(";", ",").split(",")]
+        # Sitecore multilist fields are pipe delimited; also accept comma/semicolon.
+        parts = [p.strip() for p in value.replace(";", ",").replace("|", ",").split(",")]
         return [p for p in parts if p]
     if isinstance(value, (list, tuple)):
         return [str(v).strip() for v in value if str(v).strip()]
@@ -79,6 +83,12 @@ def _normalize_datetime(value: Any) -> str:
             if parsed.tzinfo is None:
                 parsed = parsed.replace(tzinfo=timezone.utc)
             return parsed.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            pass
+        # Sitecore stores dates in basic ISO 8601 form, e.g. 20260131T000000Z.
+        try:
+            parsed = datetime.strptime(text, "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
+            return parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
         except ValueError:
             return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     return str(value)

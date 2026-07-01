@@ -1,8 +1,14 @@
-# Azure AI Search Relevance Accelerator
+# Sitecore to Azure AI Search Relevance Accelerator
 
-Stand up an Azure AI Search relevance proof of concept in minutes, prove the
-search quality lift with numbers, and keep the whole thing reproducible with
-`azd`.
+Stand up an Azure AI Search relevance proof of concept for a Sitecore site in
+minutes, prove the search quality lift with numbers, and keep the whole thing
+reproducible with `azd`.
+
+Sitecore's own guidance is that Experience Edge GraphQL search is for filtering
+content, not site search, and that advanced search belongs in a dedicated search
+service. This accelerator does exactly that: it exports published content from
+Sitecore (Experience Edge for headless, or a scripted export for classic XP),
+indexes it in Azure AI Search, and does relevance there.
 
 `azd up` provisions the infrastructure, builds two indexes from the same
 content (a naive baseline and a tuned one), loads a small sample dataset, and
@@ -10,8 +16,8 @@ runs an objective before and after evaluation. The result is a report that
 shows exactly how much a proper relevance configuration improves the answers.
 
 The accelerator ships with a synthetic Dutch knowledge base so it runs end to
-end out of the box. Bring your own content export when you are ready: any CMS
-works, because the tooling reads a simple canonical JSON schema.
+end out of the box, and an Experience Edge extractor so you can point it at your
+own Sitecore content. Everything reads a simple canonical JSON schema.
 
 ## Why this exists
 
@@ -35,7 +41,7 @@ bigger.
 
 ## Architecture
 
-![Architecture: azd provisions Azure AI Search, storage and optional Azure OpenAI. A Python pipeline preprocesses exported content, builds a naive baseline index and a tuned index, then evaluates both against a test set and writes a relevance report.](docs/images/architecture.svg)
+![Architecture: azd provisions Azure AI Search, storage and optional Azure OpenAI. Content is exported from Sitecore Experience Edge, a Python pipeline preprocesses it, builds a naive baseline index and a tuned index, then evaluates both against a test set and writes a relevance report.](docs/images/architecture.svg)
 
 Two indexes are built from the same documents so the comparison is fair. The
 baseline represents a typical out-of-the-box setup. The tuned index carries the
@@ -95,10 +101,10 @@ python -m src.search.query "paspoort aanvragen" --mode semantic
 python -m src.eval.evaluate --compare
 ```
 
-## Bring your own content
+## Bring your own Sitecore content
 
-The tooling reads a canonical JSON document. Map your CMS export to this shape
-and drop the files into a folder:
+The tooling reads a canonical JSON document. Map your Sitecore export to this
+shape and drop the files into a folder:
 
 ```json
 {
@@ -106,21 +112,30 @@ and drop the files into a folder:
   "title": "Human readable title",
   "body": "Clean text (HTML is stripped automatically)",
   "url": "https://example.org/page",
-  "contentType": "article",
+  "contentType": "Article",
   "tags": ["tag-a", "tag-b"],
   "lastModified": "2026-01-31T00:00:00Z"
 }
 ```
 
-Then point the ingest at your folder:
+For headless Sitecore, the bundled Experience Edge extractor produces this
+folder for you:
+
+```bash
+python -m src.ingest.export_edge --output ./export
+python -m src.ingest.push_to_index --both --input ./export
+```
+
+Or point the ingest at an export you produced another way:
 
 ```bash
 python -m src.ingest.push_to_index --both --input ./path/to/export
 ```
 
-See [`docs/01-export.md`](docs/01-export.md) for how to produce this export from
-any content platform, and [`docs/02-preprocess.md`](docs/02-preprocess.md) for
-the cleaning and field mapping.
+See [`docs/01-export.md`](docs/01-export.md) for how to export from Sitecore
+Experience Edge (headless) or classic XP, and
+[`docs/02-preprocess.md`](docs/02-preprocess.md) for the cleaning and field
+mapping.
 
 ## The relevance configuration
 
@@ -185,10 +200,10 @@ See [`docs/05-optional-vector.md`](docs/05-optional-vector.md).
 ```
 infra/        Bicep: search (Basic + semantic), storage, optional Azure OpenAI
 src/config/   index schema, synonyms, scoring profiles
-src/ingest/   preprocess (clean + map) and push_to_index (create + upload)
+src/ingest/   export_edge (Sitecore Experience Edge), preprocess (clean + map), push_to_index
 src/search/   query helpers (keyword, semantic, hybrid)
 src/eval/     evaluate (metrics) and report (markdown + CSV)
-data/sample/  synthetic Dutch content + test set
+data/sample/  synthetic Dutch content, test set, raw Sitecore export sample
 scripts/      azd hooks and re-run helpers
 docs/         export, preprocess, configure, evaluate, optional vector
 ```

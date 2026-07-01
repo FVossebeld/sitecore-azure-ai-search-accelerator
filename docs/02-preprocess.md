@@ -21,29 +21,34 @@ the indexer. Nothing is written to disk in between.
 
 ## Field alias mapping
 
-You do not need to rename fields before export. The preprocessor recognises
-common names and maps them to the canonical schema. The defaults cover:
+You do not need to rename Sitecore fields before export. The preprocessor
+recognises common Sitecore field names alongside generic ones and maps them to
+the canonical schema. The defaults cover:
 
 | Canonical | Recognised aliases |
 | --- | --- |
-| `id` | `id`, `itemId`, `documentId`, `key` |
-| `title` | `title`, `name`, `heading`, `pageTitle` |
-| `body` | `body`, `content`, `text`, `html`, `description` |
-| `url` | `url`, `link`, `permalink`, `path` |
-| `contentType` | `contentType`, `type`, `template`, `category` |
-| `tags` | `tags`, `keywords`, `labels`, `topics` |
-| `lastModified` | `lastModified`, `updated`, `modified`, `date`, `updatedAt` |
+| `id` | `id`, `ItemID`, `itemId`, `ItemId`, `documentId`, `_id`, `key` |
+| `title` | `title`, `Title`, `NavigationTitle`, `PageTitle`, `MetaTitle`, `name`, `heading`, `pageTitle` |
+| `body` | `body`, `Content`, `Text`, `MainText`, `content`, `text`, `html`, `Summary`, `Abstract`, `Introduction`, `description` |
+| `url` | `url`, `ItemUrl`, `Url`, `link`, `permalink`, `path` |
+| `contentType` | `contentType`, `TemplateName`, `type`, `template`, `category` |
+| `tags` | `tags`, `Tags`, `keywords`, `Keywords`, `Categories`, `labels`, `topics` |
+| `lastModified` | `lastModified`, `__Updated`, `Updated`, `updated`, `modified`, `__Created`, `date`, `updatedAt` |
 
-If your export uses a name that is not listed, either rename it during export or
-add the alias to the mapping in `preprocess.py`. The mapping is a plain
-dictionary, so extending it is a one line change.
+The `__typename` that the Experience Edge extractor emits is already the
+canonical `contentType`, and the raw Sitecore field names (`ItemID`,
+`TemplateName`, `Content`, `__Updated`) from a PowerShell or Item Service export
+are covered above. If your export uses a name that is not listed, either rename
+it during export or add the alias to the mapping in `preprocess.py`. The mapping
+is a plain dictionary, so extending it is a one line change.
 
 ## HTML stripping
 
-Bodies often contain HTML from the CMS. The preprocessor removes tags and
-decodes entities, keeping only readable text. This matters because the analyzer
-should index words, not `<div>` and `&nbsp;`. Titles are treated as plain text
-and only trimmed.
+Bodies from Sitecore rich text fields contain HTML. The preprocessor removes
+tags and decodes entities, keeping only readable text. This matters because the
+analyzer should index words, not `<div>` and `&nbsp;`. Titles are treated as
+plain text and only trimmed. Sitecore basic ISO dates such as `20260131T000000Z`
+and multivalue fields delimited by `|` are normalised here too.
 
 ## Why not chunk here
 
