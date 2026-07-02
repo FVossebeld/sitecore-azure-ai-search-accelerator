@@ -55,6 +55,10 @@ from typing import Any
 DEFAULT_ENDPOINT = "https://edge.sitecorecloud.io/api/graphql/v1"
 DEFAULT_PAGE_SIZE = 20
 
+# Bundled Experience Edge "search" response used by --dry-run so the mapping can
+# be demonstrated offline, with no endpoint, API key, or site root required.
+SAMPLE_EDGE_RESPONSE = Path(__file__).resolve().parents[2] / "data" / "sample" / "edge-response-sample.json"
+
 
 def _clause(name: str, value: str, operator: str) -> str:
     return f'{{ name: "{name}", value: "{value}", operator: {operator} }}'
@@ -172,16 +176,37 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("export"), help="Folder to write the export JSON into.")
     parser.add_argument("--page-size", type=int, default=DEFAULT_PAGE_SIZE, help="Items per Edge request (keep small for query complexity).")
     parser.add_argument("--throttle", type=float, default=0.0, help="Seconds to wait between pages.")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Map the bundled sample Edge response offline (no endpoint/key needed) and print the canonical documents.",
+    )
     args = parser.parse_args()
+
+    title_field = os.environ.get("SITECORE_TITLE_FIELD", "Title")
+    body_fields = tuple(f.strip() for f in os.environ.get("SITECORE_BODY_FIELDS", "Content").split(",") if f.strip())
+    tags_field = os.environ.get("SITECORE_TAGS_FIELD") or "Tags"
+
+    if args.dry_run:
+        sample = json.loads(SAMPLE_EDGE_RESPONSE.read_text(encoding="utf-8"))
+        docs = [
+            edge_item_to_canonical(item, "https://www.example.org", title_field, body_fields, tags_field)
+            for item in sample.get("results", [])
+        ]
+        print(f"Dry run mapped {len(docs)} sample Edge items (no network calls).")
+        print(json.dumps(docs, ensure_ascii=False, indent=2))
+        print(
+            "\nThis is exactly what export_edge writes. The next step "
+            "(python -m src.ingest.preprocess) strips the HTML and lowercases contentType."
+        )
+        return
 
     endpoint = os.environ.get("SITECORE_EDGE_ENDPOINT", DEFAULT_ENDPOINT)
     api_key = os.environ.get("SITECORE_EDGE_API_KEY", "")
     root_id = os.environ.get("SITECORE_SITE_ROOT_ID", "")
     base_url = os.environ.get("SITECORE_BASE_URL", "")
-    title_field = os.environ.get("SITECORE_TITLE_FIELD", "Title")
-    body_fields = tuple(f.strip() for f in os.environ.get("SITECORE_BODY_FIELDS", "Content").split(",") if f.strip())
-    tags_field = os.environ.get("SITECORE_TAGS_FIELD") or None
     templates = [t for t in os.environ.get("SITECORE_TEMPLATES", "").split(",") if t.strip()] or None
+    tags_field = os.environ.get("SITECORE_TAGS_FIELD") or None
 
     if not api_key or not root_id:
         raise SystemExit(

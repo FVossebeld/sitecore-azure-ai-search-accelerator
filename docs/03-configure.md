@@ -22,7 +22,7 @@ The single biggest lever for a non-English site. The tuned index uses the
 
 The baseline index uses the default analyzer, which does neither well for Dutch.
 
-Change the language by setting `SEARCH_LANGUAGE` (default `nl`). The analyzer name
+Change the language by setting `CONTENT_LANGUAGE` (default `nl`). The analyzer name
 is built as `{language}.microsoft`, so `de` gives `de.microsoft`, `fr` gives
 `fr.microsoft`, and so on.
 
@@ -90,13 +90,14 @@ higher, which is why the infrastructure provisions Basic.
 
 Real users misspell. Several layers here already absorb that: the `nl.microsoft`
 analyzer stems word variants, the synonym map covers alternate spellings you know
-about, and the semantic ranker tolerates noisy phrasing when it reranks. For
-harder cases you have two options in Azure AI Search: enable spelling correction
-(the speller, where your service API version supports it) or use fuzzy matching
-in a full Lucene query, where `verzekereng~` matches `verzekering` within an edit
+about, and the semantic ranker tolerates noisy phrasing when it reranks. For what
+slips through, the practical lever in Azure AI Search is **fuzzy matching** in a
+full Lucene query, where `verzekereng~` matches `verzekering` within an edit
 distance. Add fuzzy matching in `src/search/query.py` if your evaluation shows
-misspellings are still slipping through. Combined with the analyzer and synonyms,
-this covers most of the "the search does not understand me" complaints.
+misspellings are still slipping through. (Older guidance mentions a separate
+"speller"; recent SDK versions dropped that parameter, so fuzzy matching is the
+option to reach for.) Combined with the analyzer and synonyms, this covers most of
+the "the search does not understand me" complaints.
 
 ## How the layers combine
 

@@ -62,12 +62,21 @@ your pages are long, chunking is the first thing to add, and
 ## Running it
 
 Preprocessing runs automatically as part of ingest. You rarely call it directly.
-To inspect the result for your own export:
+To see the raw-to-canonical mapping on the bundled Sitecore sample, run it with
+`--show`:
 
 ```bash
-python -c "from src.ingest.preprocess import load_and_preprocess; \
-docs = load_and_preprocess('./path/to/export'); \
-print(len(docs), 'documents'); print(docs[0])"
+python -m src.ingest.preprocess --input data/sample/sitecore-raw --show 2
+```
+
+That reads `data/sample/sitecore-raw/raw-sitecore-export.json` (PascalCase
+`TemplateName`, HTML bodies, pipe-delimited tags, basic ISO dates) and prints the
+cleaned canonical documents: HTML stripped, tags split into a list, dates
+normalised, and `contentType` lowercased. Point `--input` at your own export
+folder to check your content the same way:
+
+```bash
+python -m src.ingest.preprocess --input ./path/to/export --show 2
 ```
 
 Check that titles and bodies look clean and that `lastModified` parsed correctly.

@@ -90,6 +90,9 @@ def _normalize_datetime(value: Any) -> str:
             parsed = datetime.strptime(text, "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
             return parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
         except ValueError:
+            # Unparseable date: fall back to "now" so the freshness scoring
+            # profile still has a value to work with. If exact freshness matters,
+            # fix the source field rather than trusting this fallback.
             return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     return str(value)
 
@@ -102,7 +105,9 @@ def to_canonical(raw: dict[str, Any]) -> dict[str, Any]:
     doc["body"] = strip_html(doc.get("body") or "")
     doc["tags"] = _normalize_tags(doc.get("tags"))
     doc["url"] = (doc.get("url") or "").strip()
-    doc["contentType"] = (doc.get("contentType") or "page").strip()
+    # Lowercase so a Sitecore template name (for example "Article") and a hand
+    # written "article" land in the same facet bucket regardless of source.
+    doc["contentType"] = (doc.get("contentType") or "page").strip().lower()
     doc["lastModified"] = _normalize_datetime(doc.get("lastModified"))
     if not doc.get("id"):
         raise ValueError(f"Document is missing an id: {raw!r}")
@@ -135,10 +140,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Preprocess a content export into canonical JSON.")
     parser.add_argument("--input", type=Path, default=SAMPLE_CONTENT_DIR, help="Folder with source *.json files.")
     parser.add_argument("--output", type=Path, help="Optional path to write the canonical JSON array.")
+    parser.add_argument("--show", type=int, metavar="N", help="Print the first N canonical documents to the screen.")
     args = parser.parse_args()
 
     docs = load_and_preprocess(args.input)
     print(f"Preprocessed {len(docs)} documents from {args.input}")
+    if args.show:
+        preview = docs[: args.show]
+        print(json.dumps(preview, ensure_ascii=False, indent=2))
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(docs, ensure_ascii=False, indent=2), encoding="utf-8")

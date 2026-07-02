@@ -10,10 +10,15 @@ The test set is a CSV with two columns:
 
 ```csv
 query,intended_id
-paspoort aanvragen,doc-paspoort
-id kaart kind,doc-identiteitskaart
-fysio vergoeding,doc-fysiotherapie
+paspoort aanvragen,doc-001
+paspoort aanvragn,doc-001
+id kaart,doc-008
+identiteitskart,doc-008
 ```
+
+These are real rows from the bundled `data/sample/testset.csv`: `id kaart` is a
+synonym for the identiteitskaart page, and `paspoort aanvragn` / `identiteitskart`
+are deliberate misspellings.
 
 - `query`: what a user types. Include the messy real-world variants: synonyms,
   abbreviations, and misspellings.
@@ -72,6 +77,23 @@ If tuned is not clearly better than baseline, that is a finding, not a failure. 
 usually means the test set does not exercise the weaknesses the configuration
 fixes, or the content genuinely does not contain the answer. Both are worth
 knowing before you invest further.
+
+## What a report looks like
+
+`reports/relevance-report.md` comes out roughly like this. The numbers below are
+illustrative, not a promise, but they show the shape of a healthy result: Success@1
+climbs and the zero-result rate falls as you move from baseline to tuned.
+
+| Configuration | Success@1 | Success@3 | MRR@10 | Zero-result rate |
+| --- | --- | --- | --- | --- |
+| baseline, keyword | 0.54 | 0.71 | 0.63 | 0.14 |
+| tuned, keyword | 0.71 | 0.86 | 0.79 | 0.03 |
+| tuned, semantic | 0.83 | 0.94 | 0.88 | 0.03 |
+
+Lift, baseline keyword to tuned semantic: Success@1 +0.29, zero-result rate -0.11.
+
+The exact figures depend on your content and test set. What you are looking for is
+the direction and size of the gap, not a specific score.
 
 ## Building a good test set from query logs
 

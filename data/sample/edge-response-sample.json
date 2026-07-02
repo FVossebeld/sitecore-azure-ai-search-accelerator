@@ -1,0 +1,28 @@
+{
+  "total": 2,
+  "pageInfo": { "endCursor": null, "hasNext": false },
+  "results": [
+    {
+      "id": "A1B2C3D4E5F64789A0B1C2D3E4F56789",
+      "__typename": "Article",
+      "url": { "path": "/nl/paspoort-aanvragen" },
+      "fields": [
+        { "name": "Title", "value": "Paspoort aanvragen" },
+        { "name": "Content", "value": "<p>U vraagt een <strong>paspoort</strong> aan bij de balie. Maak eerst een afspraak.</p>" },
+        { "name": "Tags", "value": "reisdocument|paspoort|identiteit" },
+        { "name": "__Updated", "value": "20260114T093000Z" }
+      ]
+    },
+    {
+      "id": "F9E8D7C6B5A43210F9E8D7C6B5A43210",
+      "__typename": "FAQ",
+      "url": { "path": "/nl/veelgestelde-vragen/fiets-gestolen" },
+      "fields": [
+        { "name": "Title", "value": "Aangifte van een gestolen fiets" },
+        { "name": "Content", "value": "<p>Doe online <em>aangifte</em> van een gestolen fiets met het framenummer.</p>" },
+        { "name": "Tags", "value": "aangifte|fiets|diefstal" },
+        { "name": "__Updated", "value": "20260109T140000Z" }
+      ]
+    }
+  ]
+}

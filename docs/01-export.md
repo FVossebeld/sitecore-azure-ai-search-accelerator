@@ -39,7 +39,7 @@ Every document you index is one JSON object like this:
 | `title` | yes | Page or article title. Weighted heavily in ranking. |
 | `body` | yes | Main text. HTML is stripped during preprocessing. |
 | `url` | recommended | Canonical link, used in results and reports. |
-| `contentType` | optional | Template or type label (Article, FAQ, Product). Useful for filtering. |
+| `contentType` | optional | Template or type label (for example Article or FAQ). Lowercased during preprocessing so facets stay consistent. Useful for filtering. |
 | `tags` | optional | List of strings. Weighted in ranking and usable as facets. |
 | `lastModified` | optional | ISO 8601 timestamp. Drives the freshness boost. |
 
@@ -148,6 +148,15 @@ for the layout flattening if the route item bodies come back thin.
 
 ### 5. Run it
 
+First, see the mapping offline with no endpoint or key. The dry run maps a bundled
+sample Edge response and prints the canonical documents it would write:
+
+```bash
+python -m src.ingest.export_edge --dry-run
+```
+
+When your `.env` is set, run the real export:
+
 ```bash
 python -m src.ingest.export_edge --output ./export
 ```
@@ -164,7 +173,7 @@ canonical JSON. Common ways to do that:
 
 - **Sitecore PowerShell Extensions.** Script over the published items in the
   Master or Web database, select `Title`, the rich text body field, the URL, and
-  `__Updated`, and export to JSON. `data/sample/raw-sitecore-export.json` shows
+  `__Updated`, and export to JSON. `data/sample/sitecore-raw/raw-sitecore-export.json` shows
   the raw field names this produces and how they map.
 - **Item Service or a custom API.** Page through items over REST and write JSON.
 - **Rendered-page crawl.** As a last resort, crawl the published site and take

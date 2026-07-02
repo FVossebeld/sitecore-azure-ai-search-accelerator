@@ -78,6 +78,11 @@ postprovision hook installs the Python dependencies, builds both indexes, loads
 the sample data, and runs the evaluation. Open `reports/relevance-report.md` to
 see the before and after numbers.
 
+> Region tip: the default Basic tier and semantic ranker are available in the
+> common EU regions. If West Europe reports capacity limits for new services, use
+> Sweden Central or North Europe. More detail in
+> [Cost and region notes](#cost-and-region-notes).
+
 To tear everything down:
 
 ```bash
@@ -101,6 +106,33 @@ python -m src.search.query "paspoort aanvragen" --mode semantic
 python -m src.eval.evaluate --compare
 ```
 
+## Try it
+
+Once the indexes exist (via `azd up` or the local steps above), these are the
+fastest ways to see the accelerator work and to test your own changes:
+
+```bash
+# Re-run the before/after evaluation and rewrite reports/relevance-report.md
+scripts/run_eval.ps1          # Windows
+scripts/run_eval.sh           # macOS/Linux
+# (both just call: python -m src.eval.evaluate --compare)
+
+# Ask a single query and see the ranked results
+python -m src.search.query "id kaart" --mode semantic --variant tuned
+
+# See the Sitecore raw-to-canonical mapping offline (no Azure needed)
+python -m src.ingest.export_edge --dry-run
+python -m src.ingest.preprocess --input data/sample/sitecore-raw --show 2
+
+# Point ingest at your own export folder
+python -m src.ingest.push_to_index --both --input ./path/to/export
+```
+
+To test a relevance change, edit the synonyms in `src/config/synonyms/` or the
+scoring in `src/config/scoring_profiles.json`, rebuild with
+`python -m src.ingest.push_to_index --both --load-sample`, then re-run the
+evaluation and watch the numbers move.
+
 ## Bring your own Sitecore content
 
 The tooling reads a canonical JSON document. Map your Sitecore export to this
@@ -112,11 +144,14 @@ shape and drop the files into a folder:
   "title": "Human readable title",
   "body": "Clean text (HTML is stripped automatically)",
   "url": "https://example.org/page",
-  "contentType": "Article",
+  "contentType": "article",
   "tags": ["tag-a", "tag-b"],
   "lastModified": "2026-01-31T00:00:00Z"
 }
 ```
+
+`contentType` is free text. A Sitecore template name such as `Article` is fine;
+preprocessing lowercases it so facets stay consistent.
 
 For headless Sitecore, the bundled Experience Edge extractor produces this
 folder for you:
@@ -203,7 +238,7 @@ src/config/   index schema, synonyms, scoring profiles
 src/ingest/   export_edge (Sitecore Experience Edge), preprocess (clean + map), push_to_index
 src/search/   query helpers (keyword, semantic, hybrid)
 src/eval/     evaluate (metrics) and report (markdown + CSV)
-data/sample/  synthetic Dutch content, test set, raw Sitecore export sample
+data/sample/  synthetic Dutch content, test set, Sitecore raw + Edge export samples
 scripts/      azd hooks and re-run helpers
 docs/         export, preprocess, configure, evaluate, optional vector
 ```
