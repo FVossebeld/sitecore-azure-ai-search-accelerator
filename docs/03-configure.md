@@ -11,6 +11,54 @@ same documents so you can see the effect of each layer:
 The schema and configuration are built in `src/config/index_schema.py`. Each
 layer below maps to a piece of that file.
 
+## The field schema: what to make searchable, filterable, facetable
+
+Before any relevance tuning, the biggest quiet mistake is a lazy schema where
+every field is marked searchable and retrievable "just in case". In Azure AI
+Search each attribute has a cost and a purpose, so set them deliberately. The
+attributes that matter:
+
+| Attribute | What it enables | Cost if switched on needlessly |
+| --- | --- | --- |
+| `searchable` | Full-text matching and analysis on the field | Larger index, and noise: a URL or an id that is searchable pollutes keyword matches |
+| `filterable` | Exact `$filter` clauses (`contentType eq 'faq'`) | Extra index storage |
+| `facetable` | Facet counts for navigation ("23 FAQs, 11 articles") | Extra index storage |
+| `sortable` | `$orderby` on the field | Extra index storage |
+| `retrievable` | The field comes back in results | Bandwidth; also a chance to leak internal fields |
+| `key` | The unique document id (exactly one per index) | Required |
+
+The accelerator's canonical schema applies those rules like this:
+
+| Field | searchable | filterable | facetable | sortable | Why |
+| --- | --- | --- | --- | --- | --- |
+| `id` | no | yes | no | no | The key. Filterable so you can fetch or exclude a specific document, but never a full-text field. |
+| `title` | yes | no | no | no | Primary relevance signal. Analyzed with `nl.microsoft` and weighted highest in scoring. |
+| `body` | yes | no | no | no | The main text to match on. Analyzed, but weighted below the title. |
+| `tags` | yes | yes | yes | no | Does triple duty: searchable for recall, filterable and facetable so tags drive navigation and facet counts. A string collection. |
+| `url` | no | no | no | no | Display only. Retrievable, but keeping it out of search stops link fragments from matching queries. |
+| `contentType` | no | yes | yes | no | A short label (`article`, `faq`). Filter and facet on it; there is no value in full-text searching it. |
+| `lastModified` | no | yes | no | yes | Sortable so you can order by recency, and it feeds the freshness boost in the scoring profile. |
+
+The rules of thumb behind that table:
+
+- **Make a field `searchable` only if a user would type words that should match
+  its content.** Titles and bodies yes; ids, URLs, and type codes no. Searchable
+  junk fields are the most common cause of "why did this irrelevant page match".
+- **Use `filterable` / `facetable` for the short, controlled-vocabulary fields**
+  people navigate by (content type, tags, language, section). Do not facet a
+  free-text body.
+- **Keep `sortable` for the one or two fields you actually sort on** (usually a
+  date). Every sortable field adds storage.
+- **One analyzed field per language purpose.** If you later index multiple
+  languages, prefer a field per language (`body_nl`, `body_en`) each with its own
+  analyzer over one field you try to make multilingual.
+- **Do not over-retrieve.** Return only the fields the UI renders. It saves
+  bandwidth and avoids exposing internal fields.
+
+This schema is the same in both the baseline and tuned indexes. What differs is
+everything below: the baseline leaves the analyzer, synonyms, scoring, suggester,
+and semantic ranker off, and the tuned index turns them on.
+
 ## Layer 1: language analyzer
 
 The single biggest lever for a non-English site. The tuned index uses the
