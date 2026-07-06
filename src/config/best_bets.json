@@ -1,0 +1,54 @@
+{
+  "description": "Curated answers for high-traffic head queries. Exact (normalized) query match pins a known-best page above algorithmic results. Owned by content/business, not the ranker. Keep this list small: only the top queries where you know the single best destination.",
+  "entries": [
+    {
+      "triggers": [
+        "paspoort",
+        "paspoort aanvragen",
+        "nieuw paspoort",
+        "reisdocument",
+        "reisdocument aanvragen"
+      ],
+      "id": "doc-001",
+      "title": "Paspoort aanvragen",
+      "url": "https://voorbeeld.example.org/paspoort-aanvragen",
+      "note": "High-volume passport and broader travel-document intents are pinned to the passport application page."
+    },
+    {
+      "triggers": [
+        "identiteitskaart",
+        "identiteitskaart aanvragen",
+        "id kaart",
+        "id-kaart",
+        "idkaart"
+      ],
+      "id": "doc-008",
+      "title": "Identiteitskaart aanvragen",
+      "url": "https://voorbeeld.example.org/identiteitskaart-aanvragen",
+      "note": "Common ID card spellings and formats should go directly to the identity card page."
+    },
+    {
+      "triggers": [
+        "verhuizen",
+        "verhuizing",
+        "verhuizing doorgeven",
+        "adreswijziging"
+      ],
+      "id": "doc-002",
+      "title": "Verhuizing doorgeven",
+      "url": "https://voorbeeld.example.org/verhuizing-doorgeven",
+      "note": "Moving and address-change head queries have a single known civic destination."
+    },
+    {
+      "triggers": [
+        "parkeervergunning",
+        "parkeervergunning aanvragen",
+        "parkeerkaart aanvragen"
+      ],
+      "id": "doc-005",
+      "title": "Parkeervergunning aanvragen",
+      "url": "https://voorbeeld.example.org/parkeervergunning-aanvragen",
+      "note": "Parking permit variants are navigational and should land on the permit application page."
+    }
+  ]
+}

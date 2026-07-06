@@ -7,9 +7,9 @@ indexes, and measures the relevance lift of a tuned index over a naive baseline.
 
 ## Non-negotiable rules
 
-1. **No em-dashes or en-dashes.** Never use `—` or `–` in docs, comments, commit messages, or any prose.
-   Use commas, parentheses, or rewrite the sentence. Before committing prose, grep for `—|–` (exclude
-   `*.svg`, where the `→` arrow glyph is fine) and remove any hits.
+1. **No em-dash or en-dash characters.** Never use those dash characters in docs, comments, commit
+   messages, or any prose. Use commas, parentheses, or rewrite the sentence. Before committing prose,
+   grep for those characters (exclude `*.svg`, where the arrow glyph is fine) and remove any hits.
 2. **Keep the repo customer-anonymous.** No customer names, contacts, tenant IDs, or identifying details
    anywhere: code, docs, sample data, or commit messages. Azure and Sitecore product names are fine.
    Sample content in `data/sample` is synthetic Dutch civic content and must stay generic.
@@ -54,11 +54,15 @@ already baked into this repo:
 
 - `src/ingest/` export, preprocess, and load: `export_edge.py` (Experience Edge extractor),
   `preprocess.py` (HTML strip + alias map), `push_to_index.py` (builds both indexes).
-- `src/config/` index schema, synonyms, scoring profiles.
-- `src/search/query.py` keyword, semantic, and hybrid query modes.
-- `src/eval/` `evaluate.py` and `report.py` produce `reports/relevance-report.md`.
-- `data/sample/` synthetic content, testset, and raw Sitecore export samples.
-- `docs/` numbered walkthrough (`01`..`03`), including field-schema design guidance in `03-configure.md`.
+- `src/config/` index schema, synonyms, best-bets, scoring profiles, and `validate_synonyms.py`.
+- `src/search/query.py` keyword, semantic, hybrid, best-bet curation, fuzzy fallback, and telemetry hooks.
+- `src/search/curation.py`, `src/search/suggest.py`, and `src/search/telemetry.py` hold curation,
+  suggestions, and local query logging.
+- `src/eval/` `evaluate.py`, `report.py`, and `zero_results.py` produce evaluation and query-mining
+  reports under `reports/`.
+- `data/sample/` synthetic content, graded testset, and raw Sitecore export samples.
+- `docs/` numbered walkthrough (`01`..`06`), including field-schema design guidance in `03-configure.md`
+  and relevance engineering in `06-relevance-engineering.md`.
 
 ## Dev loop
 
@@ -69,11 +73,17 @@ repo. Verify changes with `python -m py_compile` and the offline smoke runs belo
 # offline demos (no Azure needed)
 python -m src.ingest.export_edge --dry-run
 python -m src.ingest.preprocess --input data/sample/sitecore-raw --show 2
+python -m src.config.validate_synonyms --strict
+python -m src.eval.zero_results
+python -m py_compile src/search/query.py src/search/curation.py src/search/suggest.py src/search/telemetry.py src/config/validate_synonyms.py src/eval/evaluate.py src/eval/report.py src/eval/zero_results.py
 
 # full flow (needs Azure AI Search)
 python -m src.ingest.push_to_index --both --load-sample
-python -m src.search.query "fysio" --mode semantic --variant tuned
+python -m src.search.query "paspoort" --mode semantic --variant tuned
+python -m src.search.query "paspoort" --mode semantic --variant tuned --no-curation
+python -m src.search.suggest "pas" --variant tuned --kind autocomplete
 python -m src.eval.evaluate --compare        # writes reports/relevance-report.md
+python -m src.eval.evaluate --compare --curated
 ```
 
 Helper scripts: `scripts/run_eval.ps1` / `scripts/run_eval.sh`. Full deploy is `azd up` (use the Basic

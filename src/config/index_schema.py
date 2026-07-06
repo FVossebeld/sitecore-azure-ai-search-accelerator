@@ -47,7 +47,7 @@ def analyzer_for(language: str) -> str:
     """Microsoft language analyzer name, for example nl.microsoft for Dutch.
 
     The Microsoft analyzers add stemming and, for Dutch and German, decompounding
-    (zorgverzekering matches zorg and verzekering).
+    (parkeervergunning matches parkeren and vergunning).
     """
     return f"{language.lower()}.microsoft"
 

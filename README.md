@@ -37,7 +37,7 @@ bigger.
    decompounding, a synonym map, a scoring profile, a suggester, and the
    semantic ranker.
 4. **Evaluate** retrieval quality against a labelled test set and report
-   Success@1, Success@3, MRR@10, found rate, and zero-result rate.
+   Success@1, Success@3, MRR@10, NDCG@10, found rate, and zero-result rate.
 
 ## Architecture
 
@@ -103,7 +103,9 @@ az login                     # data-plane access uses your Azure AD identity
 
 python -m src.ingest.push_to_index --both --load-sample
 python -m src.search.query "paspoort aanvragen" --mode semantic
+python -m src.search.query "paspoort aanvragen" --mode semantic --no-curation
 python -m src.eval.evaluate --compare
+python -m src.eval.evaluate --compare --curated
 ```
 
 ## Try it
@@ -124,14 +126,21 @@ python -m src.search.query "id kaart" --mode semantic --variant tuned
 python -m src.ingest.export_edge --dry-run
 python -m src.ingest.preprocess --input data/sample/sitecore-raw --show 2
 
+# Relevance engineering checks and utilities
+python -m src.config.validate_synonyms --strict
+python -m src.eval.zero_results
+python -m src.search.suggest "pas" --kind autocomplete
+
 # Point ingest at your own export folder
 python -m src.ingest.push_to_index --both --input ./path/to/export
 ```
 
-To test a relevance change, edit the synonyms in `src/config/synonyms/` or the
-scoring in `src/config/scoring_profiles.json`, rebuild with
+To test a relevance change, edit the synonyms in `src/config/synonyms/`, curated
+answers in `src/config/best_bets.json`, or the scoring in
+`src/config/scoring_profiles.json`, rebuild with
 `python -m src.ingest.push_to_index --both --load-sample`, then re-run the
-evaluation and watch the numbers move.
+evaluation and watch the numbers move. Evaluation reports and local telemetry
+are written under `reports/`, which is ignored by git.
 
 ## Bring your own Sitecore content
 
@@ -177,7 +186,7 @@ mapping.
 The tuned index applies, in layers from cheapest to most involved:
 
 - **Language analyzer** (`nl.microsoft` by default): stemming and decompounding,
-  so `zorgverzekering` also matches `zorg` and `verzekering`.
+  so `parkeervergunning` also matches `parkeren` and `vergunning`.
 - **Synonym map**: query-side term expansion, so `id-kaart` finds
   `identiteitskaart`. Edit the clusters in `src/config/synonyms/`.
 - **Scoring profile**: boosts matches in the title and tags, and gently favours
@@ -187,13 +196,16 @@ The tuned index applies, in layers from cheapest to most involved:
   time, with no embeddings and no Azure OpenAI. This is the highest-value,
   lowest-effort quality lever and it stays in the core configuration.
 
-Details in [`docs/03-configure.md`](docs/03-configure.md).
+Details in [`docs/03-configure.md`](docs/03-configure.md) and
+[`docs/06-relevance-engineering.md`](docs/06-relevance-engineering.md).
 
 ## Evaluation
 
-The test set is a CSV of `query, intended_id`. The evaluator runs each query and
-records where the intended document lands. For navigational site search the
-headline metric is Success@1 (the right page is the first result). See
+The test set is a CSV of `query, intended_id, relevance`. The evaluator runs
+each unique query and records where relevant documents land. For navigational
+site search the headline metric is Success@1 (the right page is the first
+result), while NDCG@10 uses graded relevance for partial matches. Best-bets are
+off by default in evaluation and can be included with `--curated`. See
 [`docs/04-evaluate.md`](docs/04-evaluate.md) for the metric definitions and how
 to build a good test set from real query logs.
 
@@ -209,6 +221,21 @@ azd up
 ```
 
 See [`docs/05-optional-vector.md`](docs/05-optional-vector.md).
+
+## Documentation
+
+- [`docs/01-export.md`](docs/01-export.md): export content from Sitecore.
+- [`docs/02-preprocess.md`](docs/02-preprocess.md): clean and map content into
+  the canonical schema.
+- [`docs/03-configure.md`](docs/03-configure.md): configure analyzers, synonyms,
+  scoring, semantic ranker, and suggester.
+- [`docs/04-evaluate.md`](docs/04-evaluate.md): evaluate with graded relevance
+  and NDCG@10.
+- [`docs/05-optional-vector.md`](docs/05-optional-vector.md): optional vector
+  and hybrid retrieval.
+- [`docs/06-relevance-engineering.md`](docs/06-relevance-engineering.md):
+  best-bets, query mining, synonym governance, typo tolerance, and Dutch tuning
+  notes.
 
 ## Cost and region notes
 
@@ -234,13 +261,13 @@ See [`docs/05-optional-vector.md`](docs/05-optional-vector.md).
 
 ```
 infra/        Bicep: search (Basic + semantic), storage, optional Azure OpenAI
-src/config/   index schema, synonyms, scoring profiles
+src/config/   index schema, synonyms, best-bets, scoring profiles, synonym validation
 src/ingest/   export_edge (Sitecore Experience Edge), preprocess (clean + map), push_to_index
-src/search/   query helpers (keyword, semantic, hybrid)
-src/eval/     evaluate (metrics) and report (markdown + CSV)
+src/search/   query helpers, curation, suggestions, local telemetry
+src/eval/     evaluate, report, zero-result mining
 data/sample/  synthetic Dutch content, test set, Sitecore raw + Edge export samples
 scripts/      azd hooks and re-run helpers
-docs/         export, preprocess, configure, evaluate, optional vector
+docs/         export, preprocess, configure, evaluate, optional vector, relevance engineering
 ```
 
 ## Scope

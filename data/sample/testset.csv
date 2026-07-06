@@ -1,36 +1,40 @@
-query,intended_id
-paspoort aanvragen,doc-001
-reisdocument aanvragen,doc-001
-nieuw paspoort,doc-001
-paspoort aanvragn,doc-001
-verhuizing doorgeven,doc-002
-adreswijziging,doc-002
-ik ga verhuizen,doc-002
-afval scheiden,doc-003
-huisvuil,doc-003
-recycling,doc-003
-rijbewijs verlengen,doc-004
-rijbewijs verlopen,doc-004
-rijbewijs verlengn,doc-004
-parkeervergunning,doc-005
-parkeerkaart aanvragen,doc-005
-parkeren auto wijk,doc-005
-gemeentebelasting betalen,doc-006
-belasting betalen,doc-006
-gestolen fiets,doc-007
-fiets gestolen aangifte,doc-007
-tweewieler diefstal,doc-007
-identiteitskaart aanvragen,doc-008
-id kaart,doc-008
-identiteitsbewijs,doc-008
-identiteitskart,doc-008
-openingstijden,doc-009
-contact opnemen,doc-009
-melding openbare ruimte,doc-010
-kapotte straatverlichting,doc-010
-klacht stoeptegel,doc-010
-trouwen,doc-011
-huwelijk aanvragen,doc-011
-geregistreerd partnerschap,doc-011
-kinderopvang toeslag,doc-012
-kinderdagverblijf,doc-012
+query,intended_id,relevance
+paspoort aanvragen,doc-001,3
+reisdocument aanvragen,doc-001,3
+nieuw paspoort,doc-001,3
+paspoort aanvragn,doc-001,3
+verhuizing doorgeven,doc-002,3
+adreswijziging,doc-002,3
+ik ga verhuizen,doc-002,3
+afval scheiden,doc-003,3
+huisvuil,doc-003,3
+recycling,doc-003,3
+rijbewijs verlengen,doc-004,3
+rijbewijs verlopen,doc-004,3
+rijbewijs verlengn,doc-004,3
+parkeervergunning,doc-005,3
+parkeerkaart aanvragen,doc-005,3
+parkeren auto wijk,doc-005,3
+gemeentebelasting betalen,doc-006,3
+belasting betalen,doc-006,3
+gestolen fiets,doc-007,3
+fiets gestolen aangifte,doc-007,3
+tweewieler diefstal,doc-007,3
+identiteitskaart aanvragen,doc-008,3
+id kaart,doc-008,3
+identiteitsbewijs,doc-008,3
+identiteitskart,doc-008,3
+openingstijden,doc-009,3
+contact opnemen,doc-009,3
+melding openbare ruimte,doc-010,3
+kapotte straatverlichting,doc-010,3
+klacht stoeptegel,doc-010,3
+trouwen,doc-011,3
+huwelijk aanvragen,doc-011,3
+geregistreerd partnerschap,doc-011,3
+kinderopvang toeslag,doc-012,3
+kinderdagverblijf,doc-012,3
+paspoort aanvragen,doc-008,1
+identiteitskaart aanvragen,doc-001,1
+reisdocument aanvragen,doc-008,1
+verhuizing doorgeven,doc-009,1

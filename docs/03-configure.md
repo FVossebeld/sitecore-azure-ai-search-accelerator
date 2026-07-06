@@ -64,8 +64,8 @@ and semantic ranker off, and the tuned index turns them on.
 The single biggest lever for a non-English site. The tuned index uses the
 `nl.microsoft` analyzer on the title and body fields. It provides:
 
-- **Stemming**: `verzekeringen` and `verzekering` are treated as the same root.
-- **Decompounding**: `zorgverzekering` also matches `zorg` and `verzekering`,
+- **Stemming**: `vergunningen` and `vergunning` are treated as the same root.
+- **Decompounding**: `parkeervergunning` also matches `parkeren` and `vergunning`,
   which matters a lot in Dutch and German where compound words are everywhere.
 
 The baseline index uses the default analyzer, which does neither well for Dutch.
@@ -82,10 +82,10 @@ line, in Solr format:
 
 ```
 # equivalent terms (all map to each other)
-id-kaart, identiteitskaart, identiteitsbewijs
+id-kaart, idkaart, identiteitskaart
 
 # explicit expansion (left expands to right)
-ov => openbaar vervoer
+reisdocument => paspoort
 ```
 
 Lines starting with `#` are comments. Edit these files to match your domain.
@@ -140,7 +140,7 @@ Real users misspell. Several layers here already absorb that: the `nl.microsoft`
 analyzer stems word variants, the synonym map covers alternate spellings you know
 about, and the semantic ranker tolerates noisy phrasing when it reranks. For what
 slips through, the practical lever in Azure AI Search is **fuzzy matching** in a
-full Lucene query, where `verzekereng~` matches `verzekering` within an edit
+full Lucene query, where `vergunneng~` matches `vergunning` within an edit
 distance. Add fuzzy matching in `src/search/query.py` if your evaluation shows
 misspellings are still slipping through. (Older guidance mentions a separate
 "speller"; recent SDK versions dropped that parameter, so fuzzy matching is the

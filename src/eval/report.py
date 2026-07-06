@@ -9,6 +9,7 @@ METRIC_COLUMNS = [
     ("success_at_1", "Success@1"),
     ("success_at_3", "Success@3"),
     ("mrr_at_10", "MRR@10"),
+    ("ndcg_at_10", "NDCG@10"),
     ("found_rate", "Found@10"),
     ("zero_result_rate", "Zero-result"),
 ]
@@ -50,9 +51,18 @@ def write_reports(
     # Per-query CSV.
     with detail_csv.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.writer(fh)
-        writer.writerow(["config", "query", "intended_id", "rank", "num_results"])
+        writer.writerow(["config", "query", "intended_id", "rank", "num_results", "ndcg_at_10"])
         for r in per_query:
-            writer.writerow([r["config"], r["query"], r["intended_id"], r["rank"] if r["rank"] else "", r["num_results"]])
+            writer.writerow(
+                [
+                    r["config"],
+                    r["query"],
+                    r["intended_id"],
+                    r["rank"] if r["rank"] else "",
+                    r["num_results"],
+                    f"{r.get('ndcg_at_10', 0.0):.4f}",
+                ]
+            )
 
     # Markdown report.
     lines = ["# Relevance evaluation", ""]
@@ -80,6 +90,7 @@ def write_reports(
     lines.append("- **Success@1**: share of queries where the intended page is the first result.")
     lines.append("- **Success@3**: share where the intended page is in the top 3.")
     lines.append("- **MRR@10**: mean reciprocal rank of the intended page within the top 10.")
+    lines.append("- **NDCG@10**: normalized discounted cumulative gain over the top 10, using graded relevance labels 0 to 3; rewards putting the most relevant pages highest.")
     lines.append("- **Found@10**: share where the intended page appears anywhere in the top 10.")
     lines.append("- **Zero-result**: share of queries that returned no results at all.")
     lines.append("")
